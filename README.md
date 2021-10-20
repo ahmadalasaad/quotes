@@ -13,5 +13,5 @@ In order to use Gson you have to include it in your project. You can do this by 
 
 # distribution
 
-Ali Alhjouj : create the class of the qoute and test the code,and create the random number
-Ahmad Alasa'd : create the reader, convert the json file to the list and try and catch 
+  Ali Alhjouj : create the class of the qoute and test the code,and create the random number
+  Ahmad Alasa'd : create the reader, convert the json file to the list and try and catch 
