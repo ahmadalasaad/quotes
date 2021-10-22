@@ -6,8 +6,12 @@ package quotes;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -15,16 +19,33 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args)  {
-        Reader reader = null;
+
+        Gson gson = new Gson();
+        QuotesApi q = null;
+        HttpURLConnection conn = null;
+        BufferedReader read = null;
         try {
-            reader = Files.newBufferedReader(Paths.get("app/src/main/resources/recentquotes.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("from API file");
+            URL url = new URL("http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
+            conn = (HttpURLConnection) url.openConnection();
+            read = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            q = gson.fromJson(read, QuotesApi.class);
+            System.out.println("The Author Name: " + q.getQuoteAuthor());
+            System.out.println("The Quote: " + q.getQuotesText());
+        } catch (Exception IOException) {
+            System.out.println("from local file");
+            Reader reader = null;
+            try {
+                reader = Files.newBufferedReader(Paths.get("app/src/main/resources/recentquotes.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<Quote> users = new Gson().fromJson(reader, new TypeToken<List<Quote>>() {}.getType());
+            int random =  (int)(Math.random() *users.size());
+            System.out.println("The Author Name: " + users.get(random).getAuthor() + " \n" +"The Quote: " +  users.get(random).getText());
+
+
         }
-        List<Quote> users = new Gson().fromJson(reader, new TypeToken<List<Quote>>() {}.getType());
-        int random =  (int)(Math.random() * ((users.size()) + 1));
-        System.out.println(users.get(random).getAuthor() + " \n" + users.get(random).getText());
+        }
 
-
-    }
 }
