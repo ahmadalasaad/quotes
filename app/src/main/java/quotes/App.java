@@ -36,7 +36,7 @@ public class App {
             System.out.println("from local file");
             Reader reader = null;
             try {
-                reader = Files.newBufferedReader(Paths.get("app/src/main/resources/recentquotes.json"));
+                reader = Files.newBufferedReader(Paths.get("/app/src/main/resources/recentquotes.json"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
